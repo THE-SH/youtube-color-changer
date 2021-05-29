@@ -9,7 +9,7 @@
 // @grant        none
 // ==/UserScript==
 
-const color = 'green'
+const color = '#202020'
 
 window.onload = () => {
   const [head] = document.getElementsByTagName('head')
