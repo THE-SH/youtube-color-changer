@@ -1,9 +1,10 @@
 // ==UserScript==
-// @name         YouTube color
+// @name         YouTube color changer
 // @description  change youtube color
 // @version      2.0
 // @author       Davi SH
 // @match        *://www.youtube.com/*
+// @icon         https://www.google.com/s2/favicons?domain=youtube.com
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==
