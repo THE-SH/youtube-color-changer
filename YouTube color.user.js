@@ -1,38 +1,40 @@
 // ==UserScript==
 // @name         YouTube color
 // @description  change youtube color
-// @version      1.0
+// @version      2.0
 // @author       Davi SH
 // @match        *://www.youtube.com/*
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==
 
-const setColor = setInterval(_ => {
-    const color = '#0073e6';
+const color = 'green'
 
-    const subscribeButton    = document.querySelector('paper-button#button.style-scope.ytd-button-renderer.style-destructive.size-default') || document.querySelector('.style-scope.ytd-subscribe-button-renderer');
-    const progressBar        = document.querySelector('.ytp-play-progress.ytp-swatch-background-color');
-    const progressBarPointer = document.querySelector('.ytp-scrubber-button.ytp-swatch-background-color');
-    const pathElements       = document.getElementsByTagName('path');
-    const liveElement        = document.querySelectorAll('.badge.badge-style-type-live-now.style-scope.ytd-badge-supported-renderer');
-    const checkoutElement    = document.querySelector('.ytp-menuitem-toggle-checkbox');
-    const progressBars       = document.querySelectorAll('.ytp-play-progress');
+window.onload = () => {
+  const [head] = document.getElementsByTagName('head')
+  const path = document.getElementsByTagName('path')
 
-    if (subscribeButton && subscribeButton.style.backgroundColor !== color) {
-        if (subscribeButton.getAttribute('subscribed') === null) {
-            subscribeButton.style.backgroundColor = color;
-            subscribeButton.addEventListener('click', function() {
-                this.style.backgroundColor = null;
-            })
-        }
-        progressBar.style.backgroundColor = color;
-        progressBarPointer.style.backgroundColor = color;
+  const customStyle = `
+    <style>
+      .ytp-swatch-background-color,
+      tp-yt-paper-button.ytd-subscribe-button-renderer,
+      ytd-button-renderer.style-destructive[is-paper-button],
+      .ytp-menuitem[aria-checked=true] .ytp-menuitem-toggle-checkbox {
+        background: ${color}
+      }
 
-        [...pathElements].forEach(e => e.getAttribute('fill') == '#FF0000' && e.setAttribute('fill', color));
-        [...liveElement].forEach(e => e.setAttribute('style', `color: ${color}; border: 1px solid ${color}`));
-        [...progressBars].forEach(e => e.style.backgroundColor = color);
-    }
-}, 500)
+      .badge-style-type-live-now.ytd-badge-supported-renderer, .badge-style-type-starting-soon.ytd-badge-supported-renderer {
+        border: 1px solid ${color};
+        color: ${color}
+      }
+    </style>
+  `
 
-setTimeout(_ => document.querySelector('.style-scope.ytd-button-renderer.style-suggestive.size-small') != null && document.querySelector('.ytp-play-progress.ytp-swatch-background-color').style.backgroundColor === 'rgb(0, 115, 230)' && clearInterval(setColor), 7000)
+  Array.from(path).forEach(path => {
+      if (path.getAttribute('fill') === '#FF0000') {
+          path.setAttribute('fill', color)
+      }
+  })
+
+  head.insertAdjacentHTML('beforeend', customStyle)
+}
